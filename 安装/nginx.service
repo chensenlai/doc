@@ -1,0 +1,12 @@
+[Unit]
+Description=nginx.service
+After=network.target
+[Service]
+Type=forking
+ExecStart=/usr/local/nginx/nginxServer.sh start
+ExecStop=/usr/local/nginx/nginxServer.sh stop
+ExecReload=/usr/local/nginx/nginxServer.sh reload
+PIDFile=/usr/local/nginx/logs/nginx.pid
+User=root
+[Install]
+WantedBy=multi-user.target

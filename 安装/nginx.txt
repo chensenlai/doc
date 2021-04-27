@@ -1,0 +1,33 @@
+nginx源码安装，下载地址：
+http://nginx.org/download/nginx-1.14.0.tar.gz
+
+源码放置路径：
+/usr/local/nginx/source
+
+默认安装模块，指定安装目录
+./configure --prefix=/usr/local/nginx
+--with-http_stub_status_module --with-http_ssl_module
+--with-http_gzip_static_module --with-http_realip_module
+--with-http_sub_module --with-http_image_filter_module
+
+依赖PCRE zlib等库
+
+make
+make install
+
+1、nginxServer.sh 启动脚本
+sh nginxServer.sh start|stop|restart|reload
+
+2、nginx开机自启动 (systemd)
+	1）、编辑nginx.service， 路径：/lib/systemd/system/nginx.service
+	2）、systemctl enable nginx.service (开机启动)
+	3）、systemctl daemon-reload
+
+
+升级只需要把编译后nginx复制过去就行
+1. cd /usr/local/nginx/source/
+2. make
+3. cp /usr/local/nginx/sbin/nginx /usr/local/nginx/sbin/nginx.bak
+4. /usr/local/nginx/sbin/nginx -s stop
+5. cp /usr/local/nginx/source/objs/nginx /usr/local/nginx/sbin/nginx
+6. /usr/local/nginx/sbin/nginx

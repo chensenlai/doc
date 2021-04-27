@@ -1,0 +1,17 @@
+1、下载地址
+wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u141-b15/336fa29ff2bb4ef291e347e091f7f4a7/jdk-8u141-linux-x64.tar.gz"
+
+2、添加环境变量
+vi /etc/profile
+
+JAVA_HOME=/usr/local/jdk/jdk1.8.0_141
+JRE_HOME=/usr/local/jdk/jdk1.8.0_141/jre
+CLASS_PATH=.:$JAVA_HOME/lib:$JRE_HOME/lib
+PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
+export JAVA_HOME JRE_HOME CLASS_PATH PATH
+
+3、使环境变量生效
+source /etc/profile
+
+4、检查
+java -version

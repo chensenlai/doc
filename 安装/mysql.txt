@@ -1,0 +1,61 @@
+1、rpm安装
+wget https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
+
+rpm -ivh mysql57-community-release-el7-9.noarch.rpm
+
+yum install mysql-community-server
+
+安装如下：
+mysql-community-libs                           x86_64                    5.7.17-1.el7                     mysql57-community                    2.1 M
+mysql-community-libs-compat                    x86_64                    5.7.17-1.el7                     mysql57-community                    2.0 M
+mysql-community-server                         x86_64                    5.7.17-1.el7                     mysql57-community                    162 M
+mysql-community-client                         x86_64                    5.7.17-1.el7                     mysql57-community                     24 M
+mysql-community-common                         x86_64                    5.7.17-1.el7                     mysql57-community                    271 k
+
+修改配置文件 /etc/my.cnf
+
+2、systemctl启动mysql
+systemctl start mysqld
+systemctl status mysqld
+
+查看 /var/log/mysqld.log 启动日志
+
+3、systemctl设置开机启动
+systemctl enable mysqld
+systemctl daemon-reload
+
+3、修改mysql root密码
+grep 'temporary password' /var/log/mysqld.log
+
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'mypasswd';
+
+创建新用户并授权
+CREATE USER 'mysql_user'@'%' IDENTIFIED BY 'mypasswd';
+
+GRANT ALL ON *.* TO 'mysql_user'@'%';
+
+flush privileges;
+
+配置文件：/etc/my.cnf
+日志文件：/var/log/mysqld.log
+服务启动脚本：/usr/lib/systemd/system/mysqld.service
+socket文件：/var/run/mysqld/mysqld.pid
+
+
+主从配置:
+1. 主服务器创建用于同步复制的用户
+GRANT REPLICATION SLAVE ON *.* to 'myusername'@'%';
+
+2. 主服务器dump数据, 从服务器导入执行.
+
+3. 重新设置主从同步;
+Master: flush tables with read lock;
+Master: show master status;
+Slave: stop slave;
+Slave: change master to master_host='host',master_user='user',master_password='password',master_log_file='binlog.000004',master_log_pos=1947;
+Slave: show slave status;
+Slave: start slave;
+Master: unlock tables;
+
+查看binlog内容
+mysqlbinlog --no-defaults --base64-output=decode-rows -v binlog.000001
