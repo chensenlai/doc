@@ -13,6 +13,9 @@
 * mysqldump.sh		mysql备份脚本, 主从, 开启binlog. 半夜全量备份+binlog增量记录变化
 * oomscore.sh 		打印oomscore分数高进程, 找到容易被系统kill进程
 
+## js
+* 常用js函数, 工具函数, 校验函数, form表单收集参数和提交函数,站长统计函数, H5 viewport设置等
+
 ## 安装
 * jdk, nginx, mysql等安装过程描述, 方便参考
 
