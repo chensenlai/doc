@@ -5,6 +5,7 @@
 # MYSQL_PASSWORD: Mysql用户密码
 # BACKUP_ROOT: 备份目录文件: 备份目录
 # BACKUP_DB: 备份数据库名称: 备份数据库
+# BACKUP_FILE: 备份文件名
 # REMOTE_USER: 冗余备份远程机器用户名
 # REMOTE_HOST: 冗余备份远程机器主机
 
@@ -12,6 +13,7 @@ MYSQL_USER=
 MYSQL_PASSWORD=
 BACKUP_ROOT=
 BACKUP_DB=
+BACKUP_FILE=
 REMOTE_USER=
 REMOTE_HOST=
 
@@ -19,11 +21,11 @@ BACKUP_DATE=`date +%Y-%m-%d`
 BACKUP_EXIPRE_DATE=`date +%Y-%m-%d -d -7day`
 
 # 备份sql
-BACKUP_SQL=${BACKUP_DB}_${BACKUP_DATE}.sql
+BACKUP_SQL=${BACKUP_FILE}_${BACKUP_DATE}.sql
 # 打包压缩备份
-BACKUP_SQL_TARGZ=${BACKUP_DATE}.tar.gz
+BACKUP_SQL_TARGZ=${BACKUP_FILE}_${BACKUP_DATE}.tar.gz
 # 已过期的备份
-BACKUP_SQL_EXPIRE_TARGZ=${BACKUP_EXIPRE_DATE}.tar.gz
+BACKUP_SQL_EXPIRE_TARGZ=${BACKUP_FILE}_${BACKUP_EXIPRE_DATE}.tar.gz
 # 备份日志文件
 BACKUP_LOG=mysqldump.log
 
@@ -31,7 +33,7 @@ cd ${BACKUP_ROOT}
 
 # 1.全量备份mysql数据库
 echo "`date +'%Y-%m-%d %H:%M:%S'` mysqldump ${BACKUP_DB} start." >> ${BACKUP_LOG}
-mysqldump -u${MYSQL_USER} -p${MYSQL_PASSWORD} --single-transaction --flush-logs --master-data ${BACKUP_DB} > ${BACKUP_SQL}
+mysqldump -u${MYSQL_USER} -p${MYSQL_PASSWORD} --single-transaction --flush-logs --master-data --databases ${BACKUP_DB} > ${BACKUP_SQL}
 
 if [ $? -ne 0 ];then
 	echo "`date +'%Y-%m-%d %H:%M:%S'` mysqldump ${BACKUP_DB} error." >> ${BACKUP_LOG}
